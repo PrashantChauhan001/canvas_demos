@@ -30,12 +30,12 @@ class FlowFieldEffect {
     this.gradient;
     this.#createGradient();
     this.#ctx.strokeStyle = this.gradient;
-    this.#ctx.lineWidth = 2.5;
+    this.#ctx.lineWidth = 0.5;
   }
-  #drawLine(x, y) {
+  #drawLine(x, y, angle) {
     this.#ctx.beginPath();
     this.#ctx.moveTo(x, y);
-    this.#ctx.lineTo(x + 2.5, y + 2.5);
+    this.#ctx.lineTo(x + Math.cos(angle) * 20, y + Math.sin(angle) * 20);
     this.#ctx.stroke();
   }
   #createGradient() {
@@ -57,9 +57,10 @@ class FlowFieldEffect {
     this.lastTime = timeStamp;
     if (this.timer > this.interval) {
       this.#ctx.clearRect(0, 0, this.#width, this.#height);
-      for (let y = 0; y < this.#height; y += this.gridSize) {
-        for (let x = 0; x < this.#width; x += this.gridSize) {
-          this.#drawLine(x, y);
+      for (let y = 7.5; y < this.#height; y += this.gridSize) {
+        for (let x = 5; x < this.#width; x += this.gridSize) {
+          const angle = (Math.sin(x * 0.015) + Math.cos(y * 0.015)) * 2;
+          this.#drawLine(x, y, angle);
         }
       }
       this.timer = 0;
@@ -68,6 +69,7 @@ class FlowFieldEffect {
     }
     requestAnimationFrame(this.animate.bind(this));
     // console.log(deltaTime);
+    // simplex noise
   }
 }
 
