@@ -73,7 +73,8 @@ const circle = new Circle(
 
 let dx = 0,
   dy = 0,
-  collision = 0;
+  collision = 0,
+  hold = false;
 const moveCircle = (keyDownName) => {
   if (keyDownName === KEY_NAMES.RIGHT) {
     dx += circleData.speed;
@@ -104,11 +105,11 @@ const moveCircle = (keyDownName) => {
     updateCollosionCount(collision);
   }
   if (keyDownName === " ") {
-    dx = 0;
-    dy = 0;
+    hold = !hold;
   }
   console.log(dx, dy, keyDownName);
-  circle.move(dx, dy);
+  if (hold) circle.move(0, 0);
+  else circle.move(dx, dy);
   keyDownName = null;
   animatioFram = requestAnimationFrame(() => moveCircle(keyDownName));
 };
